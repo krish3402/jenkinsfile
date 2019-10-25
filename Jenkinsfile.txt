@@ -1,0 +1,15 @@
+node {
+    stage ('Git') {
+        git branch: 'dev', credentialsId: '77c9d01f-4fc4-4e4a-8414-9242ce797520', url: 'https://prasadbolloju@bitbucket.org/visionplanner/vp-ui-bms.git'
+    }
+    stage ('npm Install Packages') {
+        bat label: '', script: 'npm i'
+    }
+    stage ('test and coverage') {
+        bat label: '', script: 'npm test -- --coverage --watchAll=false'
+    }
+    stage ('HTML Report') {
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'coverage\\lcov-report\\', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+    }
+   
+}
